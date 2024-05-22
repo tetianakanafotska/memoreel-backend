@@ -21,7 +21,7 @@ const userRoutes = require("./routes/user.routes");
 app.use("/user", userRoutes);
 
 const boardsRoutes = require("./routes/boards.routes");
-app.use("/boards", boardsRoutes);
+app.use("/boardsauth", boardsRoutes);
 
 require("./error-handling")(app);
 
