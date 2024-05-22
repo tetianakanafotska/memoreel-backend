@@ -1,7 +1,7 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const boardSchema = new Schema({
-  timestamps: true,
-});
+  "boardContent": {}
+}, { timestamps: true });
 
-const Board = model(Board, boardSchema);
+module.exports = model('Board', boardSchema);
