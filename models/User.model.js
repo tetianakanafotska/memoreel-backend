@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const path = require("path");
 
 const userSchema = new Schema(
   {
@@ -17,6 +18,10 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required."],
+    },
+    profileImg: {
+      type: String,
+      default: path.join(__dirname, "../images/profile.png"),
     },
     boards: [
       {
