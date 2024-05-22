@@ -3,16 +3,6 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const User = require("../models/User.model");
 
-router.post("/", (req, res) => {
-  User.create(req.body)
-    .then((createdUser) => {
-        res.status(200).json(createdUser);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: error.message });
-    });
-});
-
 router.get("/:id", (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
