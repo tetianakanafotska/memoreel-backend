@@ -8,10 +8,9 @@ const isAuthenticated = (req, res, next) => {
     req.payload = payload;
     next();
   } catch (error) {
-    res.status(401).json({message: "Token not provided or not valid"});
+    res.status(401).json("token not provided or not valid");
   }
 };
-
 module.exports = {
   isAuthenticated,
 };
