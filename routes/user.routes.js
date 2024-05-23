@@ -2,19 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const User = require("../models/User.model");
+const Board = require("../models/Board.model");
 
 router.post("/", (req, res) => {
   User.create(req.body)
     .then((createdUser) => {
-        res.status(200).json(createdUser);
+      res.status(200).json(createdUser);
     })
     .catch((error) => {
       res.status(500).json({ message: error.message });
     });
 });
 
-router.get("/:id", (req, res) => {
-  User.findById(req.params.id)
+router.get("/:userId", (req, res) => {
+  User.findById(req.params.userId)
     .then((user) => {
       if (user) {
         res.json(user);
@@ -27,8 +28,8 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
-  User.findById(req.params.id)
+router.put("/:userId", (req, res) => {
+  User.findById(req.params.userId)
     .then((user) => {
       if (user) {
         if (req.body.name != null) {
@@ -58,13 +59,34 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  User.findByIdAndDelete(req.params.id)
+router.delete("/:userId", (req, res) => {
+  User.findByIdAndDelete(req.params.userId)
     .then(() => {
       res.json({ message: "User deleted" });
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
+    });
+});
+
+router.get("/:userId/boards", (req, res) => {
+  const { start, end } = req.query;
+  const startDate = new Date(`${start}T00:00:00.000Z`);
+  const endDate = end
+    ? new Date(`${end}T23:59:59.999Z`)
+    : new Date(`${start}T23:59:59.999Z`);
+  Board.find({
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+    userId: req.params.userId,
+  })
+    .then((allBoards) => {
+      res.status(200).json(allBoards);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Failed to fetch all the boards" });
     });
 });
 

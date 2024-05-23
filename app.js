@@ -1,8 +1,7 @@
 require("dotenv").config();
 require("./db");
-const cors = require('cors');
+const cors = require("cors");
 const express = require("express");
-
 
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 
@@ -12,10 +11,10 @@ app.use(cors());
 require("./config")(app);
 
 const indexRoutes = require("./routes/index.routes");
-app.use("/api", indexRoutes);
+app.use("/", indexRoutes);
 
 const userRoutes = require("./routes/user.routes");
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
