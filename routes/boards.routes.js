@@ -41,10 +41,14 @@ router.get('/:boardId', (req, res, next) => {
 
 
 // edit a single board
-router.put('/:boardId', (req, res, next) => {
+router.patch('/:boardId', (req, res, next) => {
 	const {boardId} = req.params
 
-	Board.findByIdAndUpdate(boardId, req.body, updatedBoard)
+	Board.findByIdAndUpdate(
+		boardId,  
+		{ $set: { 'boardContent': req.body }},
+		{ new: true, useFindAndModify: false }
+	)
 		.then((updatedBoard) => {
 			res.status(204).json(updatedBoard);
 		})
