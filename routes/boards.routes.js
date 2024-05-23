@@ -48,6 +48,21 @@ router.put("/:boardId", (req, res, next) => {
     .catch((error) => {
       res.status(500).json({ error: "Failed to update this board" });
     });
+/*router.patch('/:boardId', (req, res, next) => {
+	const {boardId} = req.params
+
+	Board.findByIdAndUpdate(
+		boardId,  
+		{ $set: { 'boardContent': req.body }},
+		{ new: true, useFindAndModify: false }
+	)
+		.then((updatedBoard) => {
+			res.status(204).json(updatedBoard);
+		})
+		.catch((error) => {
+			res.status(500).json({ error: 'Failed to update this board' });
+		});
+*/
 });
 
 // delete a single board
