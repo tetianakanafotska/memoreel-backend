@@ -2,18 +2,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
+
 const authRouter = require("express").Router();
 
 authRouter.post("/signup", (req, res, next) => {
   const { email, password, name } = req.body;
-  if (!email || !password || !name) {
-    res.status(400).json({ message: "Provide email, password and name" });
+  if (!email || !password || !name || email === '' || password === '' || name === '') {
+    res.status(400).json({ message: "Please provide your email, password, and name" });
     return;
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if (!emailRegex.test(email)) {
-    res.status(400).json({ message: "Provide a valid email address" });
+    res.status(400).json({ message: "Please provide a valid email address" });
     return;
   }
 
@@ -28,10 +29,12 @@ authRouter.post("/signup", (req, res, next) => {
 
   User.findOne({ email }).then((foundUser) => {
     if (foundUser) {
-      res.json({ message: "This user already exists" });
+      console.log('!!')
+      res.status(400).json({ message: "This user already exists" });
     }
     return;
   });
+
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -48,18 +51,24 @@ authRouter.post("/signup", (req, res, next) => {
 
 authRouter.post("/login", (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
+
+  if (email === '' || password === '') {
     res.status(400).json({ message: "Provide email and password." });
     return;
   }
+
   User.findOne({ email })
     .then((foundUser) => {
       console.log(foundUser);
-      if (!foundUser) {
-        res.status(401).json({ message: "User not found" });
-        return;
-      }
+
+			if (!foundUser) {
+				// If the user is not found, send an error response
+				res.status(401).json({ message: 'User not found.' })
+				return
+			}
+
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+
       if (passwordCorrect) {
         const { _id, email, name } = foundUser;
         const payload = { _id, email, name };
@@ -69,12 +78,12 @@ authRouter.post("/login", (req, res) => {
         });
         res.status(200).json({ authToken: authToken });
       } else {
-        res.status(401).json({ message: "Unable to authenticate the user" });
+        res.status(401).json({ message: "Incorrect password" });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Can't authenticate user" });
     });
 });
 
