@@ -2,17 +2,6 @@ const router = require("express").Router();
 const Board = require("../models/Board.model.js");
 const fileUploader = require("../config/cloudinary.config");
 
-// get all boards
-router.get("/", (req, res, next) => {
-  Board.find()
-    .then((allBoards) => {
-      res.status(200).json(allBoards);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: "Failed to fetch all the boards" });
-    });
-});
-
 // post a new board
 router.post("/", (req, res, next) => {
   Board.create(req.body)
@@ -37,7 +26,7 @@ router.get("/:boardId", (req, res, next) => {
     });
 });
 
-// edit a single board
+// redo a single board
 router.put("/:boardId", (req, res, next) => {
   const { boardId } = req.params;
 
@@ -48,21 +37,23 @@ router.put("/:boardId", (req, res, next) => {
     .catch((error) => {
       res.status(500).json({ error: "Failed to update this board" });
     });
-/*router.patch('/:boardId', (req, res, next) => {
-	const {boardId} = req.params
+});
 
-	Board.findByIdAndUpdate(
-		boardId,  
-		{ $set: { 'boardContent': req.body }},
-		{ new: true, useFindAndModify: false }
-	)
-		.then((updatedBoard) => {
-			res.status(204).json(updatedBoard);
-		})
-		.catch((error) => {
-			res.status(500).json({ error: 'Failed to update this board' });
-		});
-*/
+// patch a single board
+router.patch("/:boardId", (req, res, next) => {
+  const { boardId } = req.params;
+
+  Board.findByIdAndUpdate(
+    boardId,
+    { $set: { boardContent: req.body } },
+    { new: true, useFindAndModify: false }
+  )
+    .then((updatedBoard) => {
+      res.status(204).json(updatedBoard);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Failed to update this board" });
+    });
 });
 
 // delete a single board
