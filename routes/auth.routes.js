@@ -7,8 +7,17 @@ const authRouter = require("express").Router();
 
 authRouter.post("/signup", (req, res, next) => {
   const { email, password, name } = req.body;
-  if (!email || !password || !name || email === '' || password === '' || name === '') {
-    res.status(400).json({ message: "Please provide your email, password, and name" });
+  if (
+    !email ||
+    !password ||
+    !name ||
+    email === "" ||
+    password === "" ||
+    name === ""
+  ) {
+    res
+      .status(400)
+      .json({ message: "Please provide your email, password, and name" });
     return;
   }
 
@@ -29,10 +38,9 @@ authRouter.post("/signup", (req, res, next) => {
 
   User.findOne({ email }).then((foundUser) => {
     if (foundUser) {
-      console.log('!!')
       res.status(400).json({ message: "This user already exists" });
+      return;
     }
-    return;
   });
 
   const salt = bcrypt.genSaltSync(10);
@@ -52,7 +60,7 @@ authRouter.post("/signup", (req, res, next) => {
 authRouter.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  if (email === '' || password === '') {
+  if (email === "" || password === "") {
     res.status(400).json({ message: "Provide email and password." });
     return;
   }
@@ -61,11 +69,11 @@ authRouter.post("/login", (req, res) => {
     .then((foundUser) => {
       console.log(foundUser);
 
-			if (!foundUser) {
-				// If the user is not found, send an error response
-				res.status(401).json({ message: 'User not found.' })
-				return
-			}
+      if (!foundUser) {
+        // If the user is not found, send an error response
+        res.status(401).json({ message: "User not found." });
+        return;
+      }
 
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
