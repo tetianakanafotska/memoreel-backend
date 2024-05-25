@@ -1,14 +1,12 @@
 const { Schema, model } = require("mongoose");
 
-const boardSchema = new Schema(
-  {
-    boardContent: {},
-    userId: {
-      type: "ObjectId",
-      ref: "User",
-    },
+const boardSchema = new Schema({
+  boardContent: {},
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
-  { timestamps: true }
-);
+  createdAt: { type: Date, default: Date.now },
+});
 
 module.exports = model("Board", boardSchema);

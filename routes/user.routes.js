@@ -71,21 +71,27 @@ router.delete("/:userId", (req, res) => {
 
 router.get("/:userId/boards", (req, res) => {
   const { start, end } = req.query;
+
   const startDate = new Date(`${start}T00:00:00.000Z`);
   const endDate = end
     ? new Date(`${end}T23:59:59.999Z`)
     : new Date(`${start}T23:59:59.999Z`);
-  Board.find({
-    createdAt: {
+
+  let filter = { userId: req.params.userId };
+
+  if (start) {
+    filter.createdAt = {
       $gte: startDate,
       $lte: endDate,
-    },
-    userId: req.params.userId,
-  })
+    };
+  }
+
+  Board.find(filter)
     .then((allBoards) => {
       res.status(200).json(allBoards);
     })
     .catch((error) => {
+      console.error("Error fetching boards:", error);
       res.status(500).json({ error: "Failed to fetch all the boards" });
     });
 });

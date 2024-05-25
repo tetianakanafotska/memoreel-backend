@@ -1,16 +1,22 @@
 const router = require("express").Router();
 const Board = require("../models/Board.model.js");
 const fileUploader = require("../config/cloudinary.config");
+const User = require("../models/User.model.js");
 
 // post a new board
-router.post("/", (req, res, next) => {
-  Board.create(req.body)
-    .then((createdBoard) => {
-      res.status(201).json(createdBoard);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: "Failed to create a new board" });
+router.post("/", async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const createdBoard = await Board.create(req.body);
+    await User.findByIdAndUpdate(userId, {
+      $push: { boards: createdBoard._id },
     });
+    res.status(201).json(createdBoard);
+  } catch (error) {
+    console.error("Error creating board:", error);
+    res.status(500).json({ error: "Failed to create a new board" });
+  }
 });
 
 // get a single board
