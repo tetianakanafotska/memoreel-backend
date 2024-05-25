@@ -21,7 +21,7 @@ const userSchema = new Schema(
     },
     profileImg: {
       type: String,
-      default: path.join(__dirname, "../images/profile.png"),
+      default: path.join("images/placeholder.jpg"),
     },
     boards: [
       {
