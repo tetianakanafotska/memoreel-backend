@@ -79,7 +79,7 @@ authRouter.post("/login", (req, res) => {
 
       if (passwordCorrect) {
         const { _id, email, name, profileImg } = foundUser;
-        const payload = { _id, email, name, profileImg};
+        const payload = { _id, email, name, profileImg };
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
           algorithm: "HS256",
           expiresIn: "6h",
