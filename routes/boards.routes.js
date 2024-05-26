@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
 });
 
 // get a single board
-router.get("/:boardId", (req, res, next) => {
+router.get("/:boardId", (req, res) => {
   const { boardId } = req.params;
 
   Board.findById(boardId)
@@ -33,12 +33,12 @@ router.get("/:boardId", (req, res, next) => {
 });
 
 // redo a single board
-router.put("/:boardId", (req, res, next) => {
+router.put("/:boardId", (req, res) => {
   const { boardId } = req.params;
 
   Board.findByIdAndUpdate(boardId, req.body, updatedBoard)
     .then((updatedBoard) => {
-      res.status(204).json(updatedBoard);
+      res.status(200).json(updatedBoard);
     })
     .catch((error) => {
       res.status(500).json({ error: "Failed to update this board" });
@@ -46,7 +46,7 @@ router.put("/:boardId", (req, res, next) => {
 });
 
 // patch a single board
-router.patch("/:boardId", (req, res, next) => {
+router.patch("/:boardId", (req, res) => {
   const { boardId } = req.params;
 
   Board.findByIdAndUpdate(
@@ -55,7 +55,7 @@ router.patch("/:boardId", (req, res, next) => {
     { new: true, useFindAndModify: false }
   )
     .then((updatedBoard) => {
-      res.status(204).json(updatedBoard);
+      res.status(200).json(updatedBoard);
     })
     .catch((error) => {
       res.status(500).json({ error: "Failed to update this board" });

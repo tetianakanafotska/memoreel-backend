@@ -22,6 +22,9 @@ app.use("/auth", authRoutes);
 const boardsRoutes = require("./routes/boards.routes");
 app.use("/boards", boardsRoutes);
 
+const assetsRoutes = require("./routes/assets.routes");
+app.use("/assets", assetsRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
