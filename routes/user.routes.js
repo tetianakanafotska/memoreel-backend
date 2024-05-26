@@ -71,7 +71,6 @@ router.delete("/:userId", (req, res) => {
 
 router.get("/:userId/boards", (req, res) => {
   const { start, end } = req.query;
-
   const startDate = new Date(`${start}T00:00:00.000Z`);
   const endDate = end
     ? new Date(`${end}T23:59:59.999Z`)
@@ -87,6 +86,7 @@ router.get("/:userId/boards", (req, res) => {
   }
 
   Board.find(filter)
+    .populate("assets")
     .then((allBoards) => {
       res.status(200).json(allBoards);
     })
