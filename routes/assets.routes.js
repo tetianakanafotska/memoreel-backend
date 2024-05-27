@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Asset = require("../models/Asset.model.js");
 const Board = require("../models/Board.model.js");
-
 // post a new asset
 router.post("/", async (req, res) => {
   const { userId, boardId } = req.body;
@@ -65,4 +64,5 @@ router.delete("/:assetId", async (req, res) => {
     res.status(500).json({ error: "Failed to delete this asset" });
   }
 });
+
 module.exports = router;
