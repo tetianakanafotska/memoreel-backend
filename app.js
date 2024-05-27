@@ -14,13 +14,13 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 
 const userRoutes = require("./routes/user.routes");
-app.use("/users", userRoutes);
+app.use("/users", isAuthenticated, userRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const boardsRoutes = require("./routes/boards.routes");
-app.use("/boards", boardsRoutes);
+app.use("/boards", isAuthenticated, boardsRoutes);
 
 const assetsRoutes = require("./routes/assets.routes");
 app.use("/assets", assetsRoutes);
