@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const assetSchema = new Schema({
-  type: { type: String, enum: ["text", "youtubeURL", "image"] },
+  type: { type: String, enum: ["text", "youtubeURL", "image", "camImage"] },
   content: String,
   boardId: {
     type: Schema.Types.ObjectId,
