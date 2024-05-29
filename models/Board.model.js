@@ -12,6 +12,7 @@ const boardSchema = new Schema({
     ref: "User",
   },
   createdAt: { type: Date, default: Date.now },
+  published: { type: Boolean, default: false },
 });
 
 module.exports = model("Board", boardSchema);

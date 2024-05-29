@@ -18,6 +18,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+// get all published boards
+router.get("/", async (req, res) => {
+  try {
+    const allBoards = await Board.find({ published: true })
+      .populate("assets")
+      .populate("userId");
+    console.log("all boards", allBoards);
+    res.status(200).json(allBoards);
+  } catch (error) {
+    console.error("Error retrieving published boards", error);
+    res.status(500).json({ error: "Failed to retrieve published boards" });
+  }
+});
+
 // get a single board
 router.get("/:boardId", (req, res) => {
   const { boardId } = req.params;
@@ -50,14 +64,14 @@ router.patch("/:boardId", (req, res) => {
 
   Board.findByIdAndUpdate(
     boardId,
-    { $set: { boardContent: req.body } },
+    { $set: { published: req.body } },
     { new: true, useFindAndModify: false }
   )
     .then((updatedBoard) => {
       res.status(200).json(updatedBoard);
     })
     .catch((error) => {
-      res.status(500).json({ error: "Failed to update this board" });
+      res.status(500).json({ error: "Failed to publish this board" });
     });
 });
 
