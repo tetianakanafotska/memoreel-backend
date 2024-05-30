@@ -41,6 +41,9 @@ router.put("/:userId", (req, res) => {
         if (req.body.password != null) {
           user.password = req.body.password;
         }
+        if (req.body.profileImg != null) {
+          user.profileImg = req.body.profileImg;
+        }
 
         user
           .save()
