@@ -1,1 +1,1 @@
-FunFolio server
+MemoReel server

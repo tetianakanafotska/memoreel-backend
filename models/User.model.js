@@ -21,7 +21,6 @@ const userSchema = new Schema(
     },
     profileImg: {
       type: String,
-      default: path.join("images/placeholder.jpg"),
     },
     boards: [
       {
@@ -31,7 +30,6 @@ const userSchema = new Schema(
     ],
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );
