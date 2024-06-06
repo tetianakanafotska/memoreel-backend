@@ -60,7 +60,6 @@ router.delete("/:assetId", async (req, res) => {
 
   try {
     const deletedAsset = await Asset.findByIdAndDelete(assetId);
-    console.log("this is delted asset to be", deletedAsset);
     if (!deletedAsset) {
       return res.status(404).json({ error: "Asset not found" });
     }
