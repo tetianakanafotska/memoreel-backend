@@ -67,8 +67,6 @@ authRouter.post("/login", (req, res) => {
 
   User.findOne({ email })
     .then((foundUser) => {
-      console.log(foundUser);
-
       if (!foundUser) {
         // If the user is not found, send an error response
         res.status(401).json({ message: "User not found." });
@@ -96,7 +94,6 @@ authRouter.post("/login", (req, res) => {
 });
 
 authRouter.get("/verify", isAuthenticated, (req, res) => {
-  console.log("req.payload", req.payload);
   res.status(200).json(req.payload);
 });
 

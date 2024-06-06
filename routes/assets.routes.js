@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Asset = require("../models/Asset.model.js");
 const Board = require("../models/Board.model.js");
+const cloudinary = require("cloudinary").v2;
+
 // post a new asset
 router.post("/", async (req, res) => {
   const { userId, boardId } = req.body;
@@ -47,17 +49,31 @@ router.put("/:assetId", (req, res) => {
 
 router.delete("/:assetId", async (req, res) => {
   const { assetId } = req.params;
+
+  const getCloudinaryPublicId = (url) => {
+    const parts = url.split("/movie-gallery/");
+    if (parts.length > 1) {
+      return parts[1];
+    }
+    return null;
+  };
+
   try {
     const deletedAsset = await Asset.findByIdAndDelete(assetId);
     if (!deletedAsset) {
       return res.status(404).json({ error: "Asset not found" });
     }
-    const updatedBoard = await Board.findByIdAndUpdate(
-      deletedAsset.boardId,
-      { $pull: { assets: assetId } }
-      //{ new: true }
+    const publicId = getCloudinaryPublicId(deletedAsset.content);
+    const result = await cloudinary.api.delete_resources(
+      ["movie-gallery/" + publicId],
+      {
+        type: "upload",
+        resource_type: "raw",
+      }
     );
-
+    const updatedBoard = await Board.findByIdAndUpdate(deletedAsset.boardId, {
+      $pull: { assets: assetId },
+    });
     res.status(204).send();
   } catch (error) {
     console.error("Error deleting asset:", error);
