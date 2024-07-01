@@ -5,17 +5,14 @@ const cors = require("cors");
 
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 const FRONTEND_URL = process.env.ORIGIN || "http://localhost:5173";
-
 const app = express();
 
+require("./config")(app);
 app.use(
   cors({
     origin: [FRONTEND_URL],
   })
 );
-
-require("./config")(app);
-
 const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 
