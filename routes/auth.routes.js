@@ -73,6 +73,7 @@ authRouter.post("/login", (req, res) => {
         return;
       }
 
+      console.log("user found");
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
       if (passwordCorrect) {
