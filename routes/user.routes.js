@@ -4,16 +4,6 @@ const router = express.Router();
 const User = require("../models/User.model");
 const Board = require("../models/Board.model");
 
-router.post("/", (req, res) => {
-  User.create(req.body)
-    .then((createdUser) => {
-      res.status(200).json(createdUser);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: error.message });
-    });
-});
-
 router.get("/:userId", (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
