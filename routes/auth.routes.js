@@ -72,7 +72,6 @@ authRouter.post("/login", (req, res) => {
         res.status(401).json({ message: "User not found." });
         return;
       }
-
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
       if (passwordCorrect) {
